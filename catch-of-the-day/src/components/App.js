@@ -8,11 +8,16 @@ import Fish from './Fish';
 import sampleFishes from '../sample-fishes';
 
 class App extends React.Component {
+    // -------------------- STATE --------------------
     // Set initial state (when App loads)
     state = {
         fishes: {},
         order: {}
     };
+
+    // -------------------- LIFECYCLE METHODS --------------------
+
+    // -------------------- Custom Methods --------------------
     // Method to addFish (from AddFishForm) to state
     addFish = (fish) => {
         // 1. Take a copy of the existing state
@@ -27,13 +32,30 @@ class App extends React.Component {
         this.setState({ fishes: sampleFishes });
     }
 
+    addToOrder = (key) => {
+        // 1. Take a copy of state
+        const order = {...this.state.order};
+        // 2. Either add to order OR update the number in our order
+        order[key] = order[key] + 1 || 1;
+        // 3. Call setState to update our state object
+        this.setState({ order: order });
+    }
+
+    // -------------------- RENDER --------------------
     render() {
         return (
             <div className="catch-of-the-day">
                 <div className="menu">
                     <Header tagline="Fresh Seafood Market" />
                     <ul className="fishes">
-                        {Object.keys(this.state.fishes).map(key => <Fish key={key} details={this.state.fishes[key]}/>)}
+                        {Object.keys(this.state.fishes).map(key => (
+                            <Fish 
+                                key={key}
+                                details={this.state.fishes[key]}
+                                addToOrder={this.addToOrder}
+                                index={key}
+                            />
+                        ))}
                     </ul>
                 </div>
                 <Order />
