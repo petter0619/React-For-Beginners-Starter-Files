@@ -33,7 +33,6 @@ class App extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log(this.state.order);
         // storeId = key, this.state.order = value
         localStorage.setItem(this.props.match.params.storeId, JSON.stringify(this.state.order));
     }
@@ -52,6 +51,24 @@ class App extends React.Component {
         fishes[`fish${Date.now()}`] = fish;
         // 3. Set the new fishes object to state
         this.setState({fishes: fishes});
+    }
+
+    updateFish = (key, updatedFish) => {
+        // 1. Take a copy of the current state
+        const fishes = { ...this.state.fishes };
+        // 2. Update that state
+        fishes[key] = updatedFish;
+        // 3. Set that to state
+        this.setState({ fishes: fishes });
+    }
+
+    deleteFish = (key) => {
+        // 1. Take a copy of state
+        const fishes = { ...this.state.fishes };
+        // 2. Remove item by setting it to 'null' = Firebase also deleting the item
+        fishes[key] = null;
+        // 3. Update state
+        this.setState({ fishes });
     }
 
     loadSampleFishes = () => {
@@ -85,7 +102,13 @@ class App extends React.Component {
                     </ul>
                 </div>
                 <Order fishes={this.state.fishes} order={this.state.order}/>
-                <Inventory addFish={this.addFish} loadSampleFishes={this.loadSampleFishes} />
+                <Inventory 
+                    addFish={this.addFish} 
+                    loadSampleFishes={this.loadSampleFishes}
+                    fishes={this.state.fishes}
+                    updateFish={this.updateFish}
+                    deleteFish={this.deleteFish}
+                />
             </div>
         )
     }
