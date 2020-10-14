@@ -6,6 +6,8 @@ import Order from './Order';
 import Fish from './Fish';
 // Import sample fishes
 import sampleFishes from '../sample-fishes';
+// Import Firebase
+import base from '../base';
 
 class App extends React.Component {
     // -------------------- STATE --------------------
@@ -16,6 +18,17 @@ class App extends React.Component {
     };
 
     // -------------------- LIFECYCLE METHODS --------------------
+    componentDidMount() {
+        // Sync state with Firebase and our store
+        this.ref = base.syncState(`${this.props.match.params.storeId}/fishes`, {
+            context: this,
+            state: 'fishes'
+        });
+    }
+
+    componentWillUnmount() {
+        base.removeBinding(this.ref);
+    }
 
     // -------------------- CUSTOM METHODS --------------------
     // Method to addFish (from AddFishForm) to state
