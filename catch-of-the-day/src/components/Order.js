@@ -1,10 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 // Import helper function
 import { formatPrice } from '../helpers';
 // Imports for animations
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 class Order extends React.Component {
+    static propTypes = {
+        fishes: PropTypes.object,
+        order: PropTypes.object,
+        removeFromOrder: PropTypes.func
+    }
+
     renderOrder = (key) => {
         const fish = this.props.fishes[key];
         const count = this.props.order[key];

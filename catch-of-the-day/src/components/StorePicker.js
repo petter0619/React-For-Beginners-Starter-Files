@@ -1,8 +1,13 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
+// Import helper function
 import { getFunName } from '../helpers';
 
 class StorePicker extends React.Component {
+    static propTypes = {
+        history: PropTypes.object
+    }
+
     // ES6 method of bidning "this" in React
     /*constructor() {
         super();
