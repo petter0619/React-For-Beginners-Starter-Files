@@ -19,14 +19,27 @@ class App extends React.Component {
 
     // -------------------- LIFECYCLE METHODS --------------------
     componentDidMount() {
+        const { params } = this.props.match;
+        // Reinstate our localStorage
+        const localStorageRef = localStorage.getItem(params.storeId);
+        if(localStorageRef) {
+            this.setState({ order: JSON.parse(localStorageRef) });
+        }
         // Sync state with Firebase and our store
-        this.ref = base.syncState(`${this.props.match.params.storeId}/fishes`, {
+        this.ref = base.syncState(`${params.storeId}/fishes`, {
             context: this,
             state: 'fishes'
         });
     }
 
+    componentDidUpdate() {
+        console.log(this.state.order);
+        // storeId = key, this.state.order = value
+        localStorage.setItem(this.props.match.params.storeId, JSON.stringify(this.state.order));
+    }
+
     componentWillUnmount() {
+        // Remove Firebase binding when leaving store
         base.removeBinding(this.ref);
     }
 
